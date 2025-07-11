@@ -339,32 +339,27 @@
         /* Styles for the new countdown section */
         .countdown-flex-container {
             display: flex;
-            flex-direction: column; /* Default to column for mobile */
-            gap: 1rem; /* Reduced gap */
-            margin-top: 1.5rem; /* Reduced margin */
-            margin-bottom: 1.5rem; /* Reduced margin */
-            align-items: center; /* Center items in column layout */
-            width: 100%; /* Take full width of its parent */
-            height: 180px; /* Fixed height for the container */
-            overflow: hidden; /* Hide overflow if content is too large */
-        }
-
-        @media (min-width: 768px) {
-            .countdown-flex-container {
-                flex-direction: row; /* Side-by-side on wider screens */
-                justify-content: space-around; /* Distribute space */
-                align-items: center; /* Vertically center items when side-by-side */
-                height: 150px; /* Slightly reduced height for desktop */
-            }
+            flex-direction: row; /* Default to side-by-side */
+            flex-wrap: wrap; /* Allow items to wrap to the next line if space is limited */
+            gap: 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            justify-content: center; /* Center items horizontally */
+            align-items: center; /* Center items vertically */
+            width: 100%;
+            /* Removed fixed height */
+            overflow: hidden; /* Hide overflow from children */
+            padding: 0.5rem; /* Add some padding to the container itself */
         }
 
         .countdown-flex-item {
-            flex: 1; /* Each item takes equal space */
+            flex: 1 1 45%; /* flex-grow, flex-shrink, flex-basis. Allows shrinking, but tries to take 45% of space */
+            max-width: 50%; /* Max width for each item to ensure two fit */
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column; /* Stack content within each flex item */
-            padding: 0.5rem; /* Reduced padding */
+            padding: 0.5rem;
         }
 
         .countdown-flex-item.image-container {
@@ -372,11 +367,25 @@
         }
 
         .calendar-image {
-            max-width: 80%; /* Scale down image to fit */
-            max-height: 100%; /* Ensure it fits within the item height */
-            height: auto;
-            border-radius: 12px; /* Rounded corners for the image */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            width: 100%; /* Make image fill its container */
+            height: auto; /* Maintain aspect ratio */
+            max-width: 180px; /* Limit max size of image to prevent it from becoming too large */
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Media query to force stacking on very small screens */
+        @media (max-width: 480px) {
+            .countdown-flex-container {
+                flex-direction: column; /* Stack on very small screens */
+            }
+            .countdown-flex-item {
+                flex-basis: 100%; /* Each item takes full width when stacked */
+                max-width: 100%; /* Ensure it doesn't exceed 100% */
+            }
+            .calendar-image {
+                max-width: 200px; /* Adjust max-width for stacked image if needed */
+            }
         }
 
         .countdown-number {
@@ -397,17 +406,17 @@
         }
 
         .countdown-text {
-            font-size: 1.2rem; /* Reduced size for "days to go" or "EXPIRED" */
+            font-size: 1.5rem; /* Reverted to larger size */
             font-weight: 600;
             color: #f16375; /* Red color */
             text-align: center;
 
             /* Responsive font size for countdown text */
             @media (max-width: 768px) {
-                font-size: 1rem;
+                font-size: 1.2rem; /* Adjusted for mobile */
             }
             @media (max-width: 480px) {
-                font-size: 0.9rem;
+                font-size: 1rem; /* Adjusted for smaller mobile */
             }
         }
     </style>
@@ -460,7 +469,7 @@
                 stepNumber: 1,
                 icon: ``, // Removed SVG icon
                 question: `
-                    <p>Very soon - on 14 October 2025 - Microsoft will end support for Windows 10 and earlier versions of Windows. After this date, devices running older versions of Windows will no longer receive critical security updates. To stay safe online—especially when doing internet banking—devices need to receive regular security updates from Microsoft. These updates protect against the latest threats and vulnerabilities. The software for this upgrade is free.</p>
+                    <p>Very soon - on 14 October 2025 - Microsoft will end support for Windows 10 and earlier versions of Windows. After this date, devices running older versions of Windows will no longer receive critical security updates. To stay safe online —especially when doing internet banking— devices need updated to the latest version (Windows 11 24H2) to receive regular security updates from Microsoft. These updates protect against the latest threats and vulnerabilities. The software for this upgrade is free.</p>
 
                     <div class="countdown-flex-container">
                         <div class="countdown-flex-item image-container">
@@ -474,11 +483,11 @@
                         </div>
                     </div>
 
-                    <p class="mt-8"><strong>First, are you currently running Windows 11 version 24H2?</strong></p>
-                    <p>To check your Windows version, go to Start > Settings > System > About. Look for "Windows 11" and the version number (e.g., 24H2). If you see Windows 10, you're not on Win11 yet.</p>
+                    <p class="mt-8"><strong>First, are you already running Windows 11 version 24H2?</strong></p>
+                    <p>To check your Windows version, go to Start > Settings > System > About. Look for "Windows 11" and the version number (e.g., 24H2). If you see Windows 10, you're not on Windows 11 yet.</p>
                 `,
                 actionButtons: [
-                    { text: "Yes, I am!", next: 'sorted' },
+                    { text: "Yes, I am on 24H2", next: 'sorted' },
                     { text: "No, I'm not.", next: 'checkRequirements', style: 'btn-tertiary' } // Added style for 'No' button
                 ],
                 generalDetails: {
@@ -716,7 +725,7 @@
             const shouldShowHeading = page.generalDetails && Object.keys(page.generalDetails).length > 0;
 
             if (shouldShowHeading) {
-                generalInfoContainer.innerHTML = '<h3>More Information for this Step:</h3>';
+                generalInfoContainer.innerHTML = '<h3>More Information for this Step</h3>';
                 generalInfoContainer.classList.remove('hidden');
             } else {
                 generalInfoContainer.classList.add('hidden');
@@ -922,4 +931,3 @@
     </script>
 </body>
 </html>
-
