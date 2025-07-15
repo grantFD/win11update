@@ -1,474 +1,479 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows 11 Upgrade Guide</title>
-    <!-- Google Fonts: Inter and Quicksand -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Align items to the top for content flow */
-            min-height: 100vh;
-            background-color: #e4e0d2; /* Changed background color */
-            color: #333;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-        }
-        .container {
-            background-color: #fff;
-            border-radius: 24px; /* More rounded corners */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 2.5rem;
-            max-width: 900px; /* Max width as requested for the main container */
-            width: 90%; /* Responsive width */
-            text-align: left; /* Left justify all content by default */
-            position: relative;
-            margin: 2rem auto; /* Add margin top/bottom and center horizontally */
-            display: flex;
-            flex-direction: column; /* Use flex column to stack content and footer */
-            justify-content: space-between; /* Push footer to bottom */
-            min-height: 500px; /* Ensure a minimum height for consistent layout */
-        }
-
-        /* Centering the main content block within the container */
-        #content {
-            margin: 0 auto; /* Center the content block */
-            max-width: 700px; /* Limit content width for readability on wide screens */
-            width: 100%; /* Ensure it takes full width up to max-width */
-            flex-grow: 1; /* Allow content to grow and push footer down */
-            display: flex; /* Use flexbox for content to stack elements */
-            flex-direction: column;
-        }
-
-        .button-group {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        /* New class for grouping button and its info link */
-        .option-item {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start; /* Align items to the start (left) */
-            gap: 0.5rem; /* Space between button and info link */
-        }
-        .btn {
-            padding: 1rem 1.5rem;
-            border-radius: 16px; /* Rounded buttons */
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            cursor: pointer;
-            border: none;
-            background-color: #00afb1; /* Updated blue button color */
-            color: white;
-            width: 100%; /* Make buttons take full full width of their container */
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-        }
-        .btn-secondary {
-            background-color: #fec116; /* Updated yellow button color */
-            color: #333;
-        }
-        .btn-secondary:hover {
-            background-color: #e6b014; /* Slightly darker yellow on hover */
-        }
-        .btn-tertiary {
-            background-color: #f16375; /* Changed to red */
-            color: white;
-        }
-        .btn-tertiary:hover {
-            background-color: #e53935; /* Slightly darker red on hover */
-        }
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 1000;
-        }
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background-color: #fff;
-            padding: 2.5rem;
-            border-radius: 24px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            max-width: 80%;
-            max-height: 80%;
-            overflow-y: auto;
-            position: relative;
-            text-align: left; /* Left justify modal content */
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-        .modal.show .modal-content {
-            transform: translateY(0);
-        }
-        .modal-close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #777;
-            transition: color 0.2s ease;
-        }
-        .modal-close-btn:hover {
-            color: #333;
-        }
-        h1 {
-            font-family: 'Quicksand', sans-serif; /* Changed font to Quicksand */
-            font-size: 38px !important; /* Adjusted to be visually larger and forced */
-            font-weight: 700; /* Bold */
-            color: #333;
-            /* margin-bottom handled by flex container gap */
-        }
-        h2 {
-            font-size: 2.2rem !important; /* Retained rem and forced */
-            font-weight: 700; /* Bold */
-            color: #333;
-            margin-bottom: 1.5rem; /* Increased spacing */
-        }
-        /* Styling for h3 within modal content and main content */
-        h3 {
-            font-size: 26px !important; /* Adjusted to be visually larger and forced */
-            font-weight: 700; /* Bold */
-            color: #333;
-            margin-top: 1.5rem; /* Space above */
-            margin-bottom: 1rem; /* Spaced a line width below */
-        }
-        p {
-            font-size: 20px !important; /* Increased for better readability on wider lines */
-            line-height: 1.6;
-            margin-bottom: 1rem; /* Ensures a blank line after paragraphs */
-            /* max-width removed to match heading container width */
-            margin-left: 0; /* Align to left within its container */
-            margin-right: auto;
-        }
-        ul {
-            list-style-type: disc;
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-            /* max-width removed to match heading container width */
-            margin-right: auto;
-            text-align: left; /* Ensure list items are left-aligned */
-        }
-        li {
-            margin-bottom: 0.5rem;
-            /* max-width removed to match heading container width */
-        }
-        .info-link {
-            color: #1976D2; /* A darker blue for links */
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: 500;
-            /* Changed to block to ensure each link is on its own line */
-            display: block;
-            margin-bottom: 0.5rem; /* Add space between multiple links */
-        }
-        .info-link:hover {
-            color: #1565C0;
-        }
-        /* New style for inline links */
-        .inline-link {
-            color: #1976D2;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: 500;
-            display: inline; /* Keep it inline with text */
-        }
-        .inline-link:hover {
-            color: #1565C0;
-        }
-
-        .general-info-section {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
-            text-align: left; /* Ensure this section is left aligned */
-        }
-        .general-info-section h3 {
-            font-size: 1.5rem !important; /* Retained rem for consistency and forced */
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #555;
-        }
-
-        /* Toolbar styling */
-        .bottom-navigation {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            width: 100%; /* Ensure it takes full width of its parent container (#content) */
-            padding-top: 1.5rem;
-            border-top: 1px solid #eee;
-            margin-top: 2rem; /* Add some space above the footer */
-            align-self: center; /* Center the navigation bar within the content flex item */
-        }
-        .bottom-navigation .btn {
-            flex-grow: 1; /* Allow buttons to grow */
-            max-width: 200px; /* Limit max width for larger screens */
-        }
-        .bottom-navigation .dynamic-action-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-grow: 2; /* Give more space to these buttons */
-            justify-content: center;
-        }
-
-        /* SVG icon styling */
-        .page-icon {
-            display: block;
-            margin: 0 auto 1.5rem auto; /* Center and add space below */
-            width: 80px; /* Adjust size as needed */
-            height: 80px;
-            color: #64B5F6; /* Match button blue */
-        }
-
-        /* New styles for step number circle */
-        .step-circle {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100px; /* Doubled size */
-            height: 100px; /* Doubled size */
-            border-radius: 50%; /* Makes it a circle */
-            background-color: #026b7c; /* Changed to #026b7c */
-            color: white;
-            font-size: 48px; /* Doubled font size */
-            font-weight: 700;
-            flex-shrink: 0; /* Prevent shrinking in flex container */
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem; /* Reduced padding for smaller screens */
-                min-height: 400px;
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Windows 11 Upgrade Guide</title>
+        <!-- Google Fonts: Inter and Quicksand -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Quicksand:wght@700&display=swap"
+            rel="stylesheet" />
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            body {
+                font-family: "Inter", sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start; /* Align items to the top for content flow */
+                min-height: 100vh;
+                background-color: #e4e0d2; /* Changed background color */
+                color: #333;
+                overflow-x: hidden; /* Prevent horizontal scrolling */
             }
+            .container {
+                background-color: #fff;
+                border-radius: 24px; /* More rounded corners */
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                padding: 2.5rem;
+                max-width: 900px; /* Max width as requested for the main container */
+                width: 90%; /* Responsive width */
+                text-align: left; /* Left justify all content by default */
+                position: relative;
+                margin: 2rem auto; /* Add margin top/bottom and center horizontally */
+                display: flex;
+                flex-direction: column; /* Use flex column to stack content and footer */
+                justify-content: space-between; /* Push footer to bottom */
+                min-height: 500px; /* Ensure a minimum height for consistent layout */
+            }
+
+            /* Centering the main content block within the container */
             #content {
-                max-width: 100%; /* Allow content to take full width on mobile */
-                margin: 0; /* Remove auto margins on mobile */
+                margin: 0 auto; /* Center the content block */
+                max-width: 700px; /* Limit content width for readability on wide screens */
+                width: 100%; /* Ensure it takes full width up to max-width */
+                flex-grow: 1; /* Allow content to grow and push footer down */
+                display: flex; /* Use flexbox for content to stack elements */
+                flex-direction: column;
+            }
+
+            .button-group {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+            /* New class for grouping button and its info link */
+            .option-item {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start; /* Align items to the start (left) */
+                gap: 0.5rem; /* Space between button and info link */
+            }
+            .btn {
+                padding: 1rem 1.5rem;
+                border-radius: 16px; /* Rounded buttons */
+                font-weight: 600;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                cursor: pointer;
+                border: none;
+                background-color: #00afb1; /* Updated blue button color */
+                color: white;
+                width: 100%; /* Make buttons take full full width of their container */
+            }
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            }
+            .btn-secondary {
+                background-color: #fec116; /* Updated yellow button color */
+                color: #333;
+            }
+            .btn-secondary:hover {
+                background-color: #e6b014; /* Slightly darker yellow on hover */
+            }
+            .btn-tertiary {
+                background-color: #f16375; /* Changed to red */
+                color: white;
+            }
+            .btn-tertiary:hover {
+                background-color: #e53935; /* Slightly darker red on hover */
+            }
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                visibility: hidden;
+                transition:
+                    opacity 0.3s ease,
+                    visibility 0.3s ease;
+                z-index: 1000;
+            }
+            .modal.show {
+                opacity: 1;
+                visibility: visible;
+            }
+            .modal-content {
+                background-color: #fff;
+                padding: 2.5rem;
+                border-radius: 24px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+                max-width: 80%;
+                max-height: 80%;
+                overflow-y: auto;
+                position: relative;
+                text-align: left; /* Left justify modal content */
+                transform: translateY(20px);
+                transition: transform 0.3s ease;
+            }
+            .modal.show .modal-content {
+                transform: translateY(0);
+            }
+            .modal-close-btn {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: none;
+                border: none;
+                font-size: 1.8rem;
+                cursor: pointer;
+                color: #777;
+                transition: color 0.2s ease;
+            }
+            .modal-close-btn:hover {
+                color: #333;
             }
             h1 {
-                font-size: 28px !important; /* Adjusted for mobile and forced */
+                font-family: "Quicksand", sans-serif; /* Changed font to Quicksand */
+                font-size: 38px !important; /* Adjusted to be visually larger and forced */
+                font-weight: 700; /* Bold */
+                color: #333;
                 /* margin-bottom handled by flex container gap */
             }
             h2 {
-                font-size: 1.8rem !important; /* Retained rem and forced */
-                margin-bottom: 1rem;
+                font-size: 2.2rem !important; /* Retained rem and forced */
+                font-weight: 700; /* Bold */
+                color: #333;
+                margin-bottom: 1.5rem; /* Increased spacing */
             }
-            h3 { /* Apply responsive font size to all h3 */
-                font-size: 20px !important; /* Adjusted for mobile and forced */
+            /* Styling for h3 within modal content and main content */
+            h3 {
+                font-size: 26px !important; /* Adjusted to be visually larger and forced */
+                font-weight: 700; /* Bold */
+                color: #333;
+                margin-top: 1.5rem; /* Space above */
+                margin-bottom: 1rem; /* Spaced a line width below */
             }
             p {
-                font-size: 15px !important; /* Adjusted for mobile and forced */
+                font-size: 20px !important; /* Increased for better readability on wider lines */
                 line-height: 1.6;
-                max-width: 100%; /* Allow full width on small screens */
-                margin-left: 0; /* Ensure left alignment */
-                margin-right: 0;
+                margin-bottom: 1rem; /* Ensures a blank line after paragraphs */
+                /* max-width removed to match heading container width */
+                margin-left: 0; /* Align to left within its container */
+                margin-right: auto;
             }
             ul {
-                max-width: 100%; /* Allow full width on small screens */
-                margin-left: 1.5rem; /* Keep list indentation */
-                margin-right: 0;
+                list-style-type: disc;
+                margin-left: 1.5rem;
+                margin-bottom: 1rem;
+                /* max-width removed to match heading container width */
+                margin-right: auto;
+                text-align: left; /* Ensure list items are left-aligned */
             }
             li {
                 margin-bottom: 0.5rem;
+                /* max-width removed to match heading container width */
             }
-            .btn {
-                padding: 0.8rem 1rem;
-                font-size: 0.9rem;
+            .info-link {
+                color: #1976d2; /* A darker blue for links */
+                text-decoration: underline;
+                cursor: pointer;
+                font-weight: 500;
+                /* Changed to block to ensure each link is on its own line */
+                display: block;
+                margin-bottom: 0.5rem; /* Add space between multiple links */
             }
-            .modal-content {
-                padding: 1.5rem;
+            .info-link:hover {
+                color: #1565c0;
             }
+            /* New style for inline links */
+            .inline-link {
+                color: #1976d2;
+                text-decoration: underline;
+                cursor: pointer;
+                font-weight: 500;
+                display: inline; /* Keep it inline with text */
+            }
+            .inline-link:hover {
+                color: #1565c0;
+            }
+
+            .general-info-section {
+                margin-top: 2rem;
+                padding-top: 1rem;
+                border-top: 1px solid #eee;
+                text-align: left; /* Ensure this section is left aligned */
+            }
+            .general-info-section h3 {
+                font-size: 1.5rem !important; /* Retained rem for consistency and forced */
+                font-weight: 600;
+                margin-bottom: 1rem;
+                color: #555;
+            }
+
+            /* Toolbar styling */
             .bottom-navigation {
-                flex-direction: column; /* Stack buttons vertically */
-                align-items: center; /* Center them */
-                gap: 0.5rem; /* Reduce gap on mobile */
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+                width: 100%; /* Ensure it takes full width of its parent container (#content) */
+                padding-top: 1.5rem;
+                border-top: 1px solid #eee;
+                margin-top: 2rem; /* Add some space above the footer */
+                align-self: center; /* Center the navigation bar within the content flex item */
             }
             .bottom-navigation .btn {
-                width: 100%; /* Take full width on mobile */
-                max-width: 300px; /* A reasonable max-width for stacked buttons */
+                flex-grow: 1; /* Allow buttons to grow */
+                max-width: 200px; /* Limit max width for larger screens */
             }
             .bottom-navigation .dynamic-action-buttons {
-                flex-direction: column; /* Stack buttons within this group too */
-                gap: 0.5rem;
-                width: 100%; /* Ensure this container also takes full width */
-                max-width: 300px; /* Match max-width of individual buttons */
+                display: flex;
+                gap: 1rem;
+                flex-grow: 2; /* Give more space to these buttons */
+                justify-content: center;
             }
+
+            /* SVG icon styling */
             .page-icon {
-                width: 60px;
-                height: 60px;
-                margin-bottom: 1rem;
+                display: block;
+                margin: 0 auto 1.5rem auto; /* Center and add space below */
+                width: 80px; /* Adjust size as needed */
+                height: 80px;
+                color: #64b5f6; /* Match button blue */
             }
-            .option-item {
-                align-items: flex-start; /* Ensure left alignment for option items */
-            }
+
+            /* New styles for step number circle */
             .step-circle {
-                width: 80px; /* Doubled responsive size */
-                height: 80px; /* Doubled responsive size */
-                font-size: 40px; /* Doubled responsive font size */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100px; /* Doubled size */
+                height: 100px; /* Doubled size */
+                border-radius: 50%; /* Makes it a circle */
+                background-color: #026b7c; /* Changed to #026b7c */
+                color: white;
+                font-size: 48px; /* Doubled font size */
+                font-weight: 700;
+                flex-shrink: 0; /* Prevent shrinking in flex container */
             }
-        }
 
-        /* Styles for the new countdown section */
-        .countdown-flex-container {
-            display: flex;
-            flex-direction: row; /* Default to side-by-side */
-            flex-wrap: wrap; /* Allow items to wrap to the next line if space is limited */
-            gap: 1rem;
-            margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
-            justify-content: center; /* Center items horizontally */
-            align-items: center; /* Center items vertically */
-            width: 100%;
-            /* Removed fixed height */
-            overflow: hidden; /* Hide overflow from children */
-            padding: 0.5rem; /* Add some padding to the container itself */
-        }
+            /* Responsive adjustments */
+            @media (max-width: 768px) {
+                .container {
+                    padding: 1rem; /* Reduced padding for smaller screens */
+                    min-height: 400px;
+                }
+                #content {
+                    max-width: 100%; /* Allow content to take full width on mobile */
+                    margin: 0; /* Remove auto margins on mobile */
+                }
+                h1 {
+                    font-size: 28px !important; /* Adjusted for mobile and forced */
+                    /* margin-bottom handled by flex container gap */
+                }
+                h2 {
+                    font-size: 1.8rem !important; /* Retained rem and forced */
+                    margin-bottom: 1rem;
+                }
+                h3 {
+                    /* Apply responsive font size to all h3 */
+                    font-size: 20px !important; /* Adjusted for mobile and forced */
+                }
+                p {
+                    font-size: 15px !important; /* Adjusted for mobile and forced */
+                    line-height: 1.6;
+                    max-width: 100%; /* Allow full width on small screens */
+                    margin-left: 0; /* Ensure left alignment */
+                    margin-right: 0;
+                }
+                ul {
+                    max-width: 100%; /* Allow full width on small screens */
+                    margin-left: 1.5rem; /* Keep list indentation */
+                    margin-right: 0;
+                }
+                li {
+                    margin-bottom: 0.5rem;
+                }
+                .btn {
+                    padding: 0.8rem 1rem;
+                    font-size: 0.9rem;
+                }
+                .modal-content {
+                    padding: 1.5rem;
+                }
+                .bottom-navigation {
+                    flex-direction: column; /* Stack buttons vertically */
+                    align-items: center; /* Center them */
+                    gap: 0.5rem; /* Reduce gap on mobile */
+                }
+                .bottom-navigation .btn {
+                    width: 100%; /* Take full width on mobile */
+                    max-width: 300px; /* A reasonable max-width for stacked buttons */
+                }
+                .bottom-navigation .dynamic-action-buttons {
+                    flex-direction: column; /* Stack buttons within this group too */
+                    gap: 0.5rem;
+                    width: 100%; /* Ensure this container also takes full width */
+                    max-width: 300px; /* Match max-width of individual buttons */
+                }
+                .page-icon {
+                    width: 60px;
+                    height: 60px;
+                    margin-bottom: 1rem;
+                }
+                .option-item {
+                    align-items: flex-start; /* Ensure left alignment for option items */
+                }
+                .step-circle {
+                    width: 80px; /* Doubled responsive size */
+                    height: 80px; /* Doubled responsive size */
+                    font-size: 40px; /* Doubled responsive font size */
+                }
+            }
 
-        .countdown-flex-item {
-            flex: 1 1 45%; /* flex-grow, flex-shrink, flex-basis. Allows shrinking, but tries to take 45% of space */
-            max-width: 50%; /* Max width for each item to ensure two fit */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column; /* Stack content within each flex item */
-            padding: 0.5rem;
-        }
-
-        .countdown-flex-item.image-container {
-            justify-content: flex-end; /* Right justify the image */
-        }
-
-        .calendar-image {
-            width: 100%; /* Make image fill its container */
-            height: auto; /* Maintain aspect ratio */
-            max-width: 180px; /* Limit max size of image to prevent it from becoming too large */
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Media query to force stacking on very small screens */
-        @media (max-width: 480px) {
+            /* Styles for the new countdown section */
             .countdown-flex-container {
-                flex-direction: column; /* Stack on very small screens */
+                display: flex;
+                flex-direction: row; /* Default to side-by-side */
+                flex-wrap: wrap; /* Allow items to wrap to the next line if space is limited */
+                gap: 1rem;
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+                justify-content: center; /* Center items horizontally */
+                align-items: center; /* Center items vertically */
+                width: 100%;
+                /* Removed fixed height */
+                overflow: hidden; /* Hide overflow from children */
+                padding: 0.5rem; /* Add some padding to the container itself */
             }
+
             .countdown-flex-item {
-                flex-basis: 100%; /* Each item takes full width when stacked */
-                max-width: 100%; /* Ensure it doesn't exceed 100% */
+                flex: 1 1 45%; /* flex-grow, flex-shrink, flex-basis. Allows shrinking, but tries to take 45% of space */
+                max-width: 50%; /* Max width for each item to ensure two fit */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column; /* Stack content within each flex item */
+                padding: 0.5rem;
             }
+
+            .countdown-flex-item.image-container {
+                justify-content: flex-end; /* Right justify the image */
+            }
+
             .calendar-image {
-                max-width: 200px; /* Adjust max-width for stacked image if needed */
+                width: 100%; /* Make image fill its container */
+                height: auto; /* Maintain aspect ratio */
+                max-width: 180px; /* Limit max size of image to prevent it from becoming too large */
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             }
-        }
 
-        .countdown-number {
-            font-size: 4rem; /* Reduced font size for the number */
-            font-weight: 700; /* Bold */
-            color: #f16375; /* Red color */
-            line-height: 1; /* Adjust line height to prevent extra space */
-            margin-bottom: 0.2rem; /* Reduced space between number and text */
-            text-align: center;
-
-            /* Responsive font size for countdown number */
-            @media (max-width: 768px) {
-                font-size: 3rem;
-            }
+            /* Media query to force stacking on very small screens */
             @media (max-width: 480px) {
-                font-size: 2.5rem;
+                .countdown-flex-container {
+                    flex-direction: column; /* Stack on very small screens */
+                }
+                .countdown-flex-item {
+                    flex-basis: 100%; /* Each item takes full width when stacked */
+                    max-width: 100%; /* Ensure it doesn't exceed 100% */
+                }
+                .calendar-image {
+                    max-width: 200px; /* Adjust max-width for stacked image if needed */
+                }
             }
-        }
 
-        .countdown-text {
-            font-size: 1.5rem; /* Reverted to larger size */
-            font-weight: 600;
-            color: #f16375; /* Red color */
-            text-align: center;
+            .countdown-number {
+                font-size: 4rem; /* Reduced font size for the number */
+                font-weight: 700; /* Bold */
+                color: #f16375; /* Red color */
+                line-height: 1; /* Adjust line height to prevent extra space */
+                margin-bottom: 0.2rem; /* Reduced space between number and text */
+                text-align: center;
 
-            /* Responsive font size for countdown text */
-            @media (max-width: 768px) {
-                font-size: 1.2rem; /* Adjusted for mobile */
+                /* Responsive font size for countdown number */
+                @media (max-width: 768px) {
+                    font-size: 3rem;
+                }
+                @media (max-width: 480px) {
+                    font-size: 2.5rem;
+                }
             }
-            @media (max-width: 480px) {
-                font-size: 1rem; /* Adjusted for smaller mobile */
+
+            .countdown-text {
+                font-size: 1.5rem; /* Reverted to larger size */
+                font-weight: 600;
+                color: #f16375; /* Red color */
+                text-align: center;
+
+                /* Responsive font size for countdown text */
+                @media (max-width: 768px) {
+                    font-size: 1.2rem; /* Adjusted for mobile */
+                }
+                @media (max-width: 480px) {
+                    font-size: 1rem; /* Adjusted for smaller mobile */
+                }
             }
-        }
-    </style>
-</head>
-<body>
-    <div class="container" id="app-container">
-        <div id="content">
-            <!-- New container for step number and H1 -->
-            <div id="page-header-container"></div>
+        </style>
+    </head>
+    <body>
+        <div class="container" id="app-container">
+            <div id="content">
+                <!-- New container for step number and H1 -->
+                <div id="page-header-container"></div>
 
-            <div id="question-text-container">
-                <!-- Main question text and additional content will go here -->
-            </div>
-            <div class="button-group" id="options-container">
-                <!-- Buttons and their associated info links will be injected here by JavaScript -->
-            </div>
-            <div id="general-info-container" class="general-info-section hidden">
-                <h3>More Information for this Step:</h3>
-                <!-- General info links will be injected here -->
-            </div>
-
-            <div class="bottom-navigation">
-                <button id="back-btn" class="btn btn-secondary hidden">Back</button>
-                <div id="dynamic-action-buttons" class="dynamic-action-buttons">
-                    <!-- Action buttons for steps 1, 2, confirmation -->
+                <div id="question-text-container">
+                    <!-- Main question text and additional content will go here -->
                 </div>
-                <button id="reset-btn" class="btn btn-secondary hidden">Start Over</button>
+                <div class="button-group" id="options-container">
+                    <!-- Buttons and their associated info links will be injected here by JavaScript -->
+                </div>
+                <div id="general-info-container" class="general-info-section hidden">
+                    <h3>More Information for this Step:</h3>
+                    <!-- General info links will be injected here -->
+                </div>
+
+                <div class="bottom-navigation">
+                    <button id="back-btn" class="btn btn-secondary hidden">Back</button>
+                    <div id="dynamic-action-buttons" class="dynamic-action-buttons">
+                        <!-- Action buttons for steps 1, 2, confirmation -->
+                    </div>
+                    <button id="reset-btn" class="btn btn-secondary hidden">Start Over</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal for detailed explanations -->
-    <div id="info-modal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close-btn" onclick="hideModal()">&times;</button>
-            <h2 id="modal-title"></h2>
-            <div id="modal-body"></div>
+        <!-- Modal for detailed explanations -->
+        <div id="info-modal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close-btn" onclick="hideModal()">&times;</button>
+                <h2 id="modal-title"></h2>
+                <div id="modal-body"></div>
+            </div>
         </div>
-    </div>
 
-    <script>
-        // Define the application state and content
-        let currentPage = 'start';
-        let pageHistory = []; // To store the history of visited pages
+        <script>
+            // Define the application state and content
+            let currentPage = "start";
+            let pageHistory = []; // To store the history of visited pages
 
-        const pages = {
-            'start': {
-                type: 'step',
-                title: "Windows 11 Upgrade Guide",
-                stepNumber: 1,
-                icon: ``, // Removed SVG icon
-                question: `
+            const pages = {
+                start: {
+                    type: "step",
+                    title: "Windows 11 Upgrade Guide",
+                    stepNumber: 1,
+                    icon: ``, // Removed SVG icon
+                    question: `
                     <p>Very soon - on 14 October 2025 - Microsoft will end support for Windows 10 and earlier versions of Windows. After this date, devices running older versions of Windows will no longer receive critical security updates. To stay safe online —especially when doing internet banking— devices need updated to the latest version (Windows 11 24H2) to receive regular security updates from Microsoft. These updates protect against the latest threats and vulnerabilities. The software for this upgrade is free.</p>
 
                     <div class="countdown-flex-container">
@@ -486,21 +491,21 @@
                     <p class="mt-8"><strong>First, are you already running Windows 11 version 24H2?</strong></p>
                     <p>To check your Windows version, go to Start > Settings > System > About. Look for "Windows 11" and the version number (e.g., 24H2). If you see Windows 10, you're not on Windows 11 yet.</p>
                 `,
-                actionButtons: [
-                    { text: "Yes, I am on 24H2", next: 'sorted' },
-                    { text: "No, I'm not.", next: 'checkRequirements', style: 'btn-tertiary' } // Added style for 'No' button
-                ],
-                generalDetails: {
-                    whyUpgrade: {
-                        title: "Why You Need to Upgrade",
-                        content: `
+                    actionButtons: [
+                        { text: "Yes, I am on 24H2", next: "sorted" },
+                        { text: "No, I'm not.", next: "checkRequirements", style: "btn-tertiary" } // Added style for 'No' button
+                    ],
+                    generalDetails: {
+                        whyUpgrade: {
+                            title: "Why You Need to Upgrade",
+                            content: `
                             <p>Microsoft is keen to get as many users as possible off the older versions and onto the latest Windows 11 for security and support. The previous version (Windows 10) was introduced in July 2015 so is now 10 years old - a lifetime in the computer industry. Windows 11 first came out in October 2021, so the name is coming up for 4 years old. However Windows 11 is upgraded every year. Rather than have Windows 12, 13 etc, Microsoft has chosen to stick with the Windows 11 name, but add a code for the year, so the annual releases are called Win11 22H2, Win 11 23H2, and Win 11 24H2. Win 11 25H2 is due out later this year.</p>
                             <p>Windows 11 looks much more modern than previous versions, with the most obvious difference being the changes in the taskbar, and the start menu. There are new security features and under the hood many things have been changed to make Windows more reliable and easier to use. All new Windows software expects to run on Windows 11, and users should plan to move.</p>
                         `
-                    },
-                    windowsVersions: {
-                        title: "What Versions of Windows 11 are there?",
-                        content: `
+                        },
+                        windowsVersions: {
+                            title: "What Versions of Windows 11 are there?",
+                            content: `
                             <p>FYI you’ll see Windows 11 advertised in 3 versions - all variations of Windows 11 Home:</p>
                             <ul class="list-disc list-inside">
                                 <li><strong>Windows 11 Pro:</strong> Adds some corporate management features such as BitLocker encryption. This puts everything on lockdown if your device is lost or stolen, so no one else can access your systems or data.</li>
@@ -508,26 +513,26 @@
                             </ul>
                             <p>When you upgrade you get the same variant - from 10 Pro you’ll get 11 Pro, otherwise you’ll get Win 11 Home.</p>
                         `
+                        }
                     }
-                }
-            },
-            'checkRequirements': {
-                type: 'step',
-                title: "Does your PC meet the upgrade requirements?",
-                stepNumber: 2,
-                icon: ``, // Removed SVG icon
-                question: `
+                },
+                checkRequirements: {
+                    type: "step",
+                    title: "Does your PC meet the upgrade requirements?",
+                    stepNumber: 2,
+                    icon: ``, // Removed SVG icon
+                    question: `
                     <p>If you're not on Windows 11 yet, let's see if your current PC is ready for the upgrade. Does it meet the requirements?</p>
                     <p>To check your PC, download and run Microsoft's 'PC Health Check' app from <a href="https://aka.ms/GetPCHealthCheckApp" target="_blank" class="inline-link">aka.ms/GetPCHealthCheckApp</a>. It will quickly tell you if your system is compatible. If not, consider your options.</p>
                 `,
-                actionButtons: [
-                    { text: "Yes, it does!", next: 'canUpgrade' },
-                    { text: "No, it doesn't.", next: 'deviceChoice', style: 'btn-tertiary' } // Added style for 'No' button
-                ],
-                generalDetails: {
-                    requirements: {
-                        title: "Windows 11 Upgrade Requirements",
-                        content: `
+                    actionButtons: [
+                        { text: "Yes, it does!", next: "canUpgrade" },
+                        { text: "No, it doesn't.", next: "deviceChoice", style: "btn-tertiary" } // Added style for 'No' button
+                    ],
+                    generalDetails: {
+                        requirements: {
+                            title: "Windows 11 Upgrade Requirements",
+                            content: `
                             <p>For a smooth Windows 11 experience, your PC needs to meet some minimum hardware specifications:</p>
                             <ul class="list-disc list-inside">
                                 <li><strong>Processor:</strong> A powerful enough processor from Intel (8th gen or newer, some 7th/6th gen with SSE4.2 may work), AMD (with SSE4A/SSE4.2), or Qualcomm (ARMv8.1 or higher).</li>
@@ -537,10 +542,10 @@
                                 <li><strong>TPM 2.0:</strong> A Trusted Platform Module (TPM) version 2.0 – this is a special encryption chip crucial for Windows 11 security.</li>
                             </ul>
                         `
-                    },
-                    aboutUpgrading: {
-                        title: "What to Know About Upgrading to Windows 11",
-                        content: `
+                        },
+                        aboutUpgrading: {
+                            title: "What to Know About Upgrading to Windows 11",
+                            content: `
                             <p>The upgrade process can take a few hours, so be prepared! Here are some key steps:</p>
                             <h3>Before Installing:</h3>
                             <ul class="list-disc list-inside">
@@ -561,69 +566,70 @@
                             </ul>
                             <p class="mt-4">For advanced users or with a trusted technician, you can find more resources like <a href="https://github.com/builtbybel/Flyby11" target="_blank" class="inline-link">Flyby11 on GitHub</a> for unsupported machines, but we generally recommend sticking to supported upgrades for seniors.</p>
                         `
+                        }
                     }
-                }
-            },
-            'canUpgrade': {
-                type: 'confirmation',
-                title: "You're ready to upgrade", // Changed title
-                question: `
+                },
+                canUpgrade: {
+                    type: "confirmation",
+                    title: "You're ready to upgrade", // Changed title
+                    question: `
                     <p>That's wonderful! Your PC meets all the requirements to upgrade to Windows 11. This means you can enjoy enhanced security, a more modern interface, and continued support from Microsoft.</p>
                     <p>Remember to make a step-by-step plan and to backup your data before doing anything.</p>
                     <p>You can usually initiate the upgrade through Windows Update on your current Windows 10 system.</p>
-                `,
-            },
-            'deviceChoice': {
-                type: 'choices',
-                title: "What's Your Next Move?",
-                stepNumber: 3,
-                icon: ``, // Removed SVG icon
-                question: `<p>Since your current PC doesn't meet the Windows 11 requirements, let's explore your best options to stay safe and productive online.</p>`,
-                options: [
-                    { text: "Take the risk and keep using Windows 10 (Not Recommended)", next: 'endRisk' },
-                    { text: "Get Extended Support and delay the decision", next: 'endDelay' },
-                    { text: "Explore Workarounds (Not Recommended)", next: 'endWorkaround' },
-                    { text: "Replace your PC", next: 'endReplace' }
-                ]
-            },
-            'sorted': {
-                type: 'final',
-                title: "You're Sorted!",
-                question: "Fantastic! You're all set with Windows 11, or you've made a great plan for your next steps. Enjoy your secure and modern computing experience!",
-            },
-            'endRisk': {
-                type: 'final',
-                title: "Taking the Risk - Be Aware!",
-                question: `
+                `
+                },
+                deviceChoice: {
+                    type: "choices",
+                    title: "What's Your Next Move?",
+                    stepNumber: 3,
+                    icon: ``, // Removed SVG icon
+                    question: `<p>Since your current PC doesn't meet the Windows 11 requirements, let's explore your best options to stay safe and productive online.</p>`,
+                    options: [
+                        { text: "Replace your PC", next: "endReplace" },
+                        { text: "Get Extended Support and delay the decision", next: "endDelay" },
+                        { text: "Take the risk and keep using Windows 10 (Not Recommended)", next: "endRisk" },
+                        { text: "Explore Workarounds (Not Recommended)", next: "endWorkaround" }
+                    ]
+                },
+                sorted: {
+                    type: "final",
+                    title: "You're Sorted!",
+                    question:
+                        "Fantastic! You're all set with Windows 11, or you've made a great plan for your next steps. Enjoy your secure and modern computing experience!"
+                },
+                endRisk: {
+                    type: "final",
+                    title: "Taking the Risk - Be Aware!",
+                    question: `
                     <p>While your PC will continue to run, ignoring the upgrade means you'll be at greater risk from viruses, scams, and malware after October 14, 2025. Microsoft will no longer provide critical security updates for Windows 10.</p>
                     <p>If you use your PC for anything important (like banking, personal details, or passwords), going online without security updates is very risky. We strongly advise against this option for most users.</p>
                 `,
-                options: []
-            },
-            'endDelay': {
-                type: 'final',
-                title: "Delaying with Extended Support",
-                question: `
+                    options: []
+                },
+                endDelay: {
+                    type: "final",
+                    title: "Delaying with Extended Support",
+                    question: `
                     <p>Microsoft offers an Extended Security Updates (ESU) program that will allow you to keep receiving critical Windows 10 security updates for an additional year. But there is a catch.</p>
                     <p>Over the coming months Windows 10 users will start to be “nagged” by the offer to enrol in Extended Security Update. Saying yes will give you three options to keep receiving critical security updates for Windows 10: Pay $30USD, pay 1,000 Microsoft points (earned by doing certain things in the Microsoft Store), or sign up for Windows Backup and use it to back up your Windows settings in OneDrive. The last option is probably free if you already pay for Microsoft 365. This is a good temporary solution if you need more time, but it's not a permanent fix.</p>
                 `,
-                options: []
-            },
-            'endWorkaround': {
-                type: 'final',
-                title: "Exploring Workarounds - Use Caution!",
-                question: `
+                    options: []
+                },
+                endWorkaround: {
+                    type: "final",
+                    title: "Exploring Workarounds - Use Caution!",
+                    question: `
                     <h3>Forcing Windows 11 on unsupported hardware:</h3>
                     <p>You might see online ads or tech offers promising to "force upgrade" any Windows 10 PC to Windows 11 24H2, even if it's unsupported. While these can work fine on some PCs, please note that Microsoft has warned that future updates may be blocked on unsupported hardware, and Windows 11 can crash more frequently on non-supported processors. For seniors, we strongly advise against these methods due to the potential for instability and security issues. Stick to supported upgrades only.</p>
                     <h3>Other Operating Systems:</h3>
                     <p>Some alternatives like Linux or Chrome OS Flex can run on older PCs, but they require specialized knowledge for installation and optimal use. We generally don't recommend these for most seniors unless you have dedicated technical support.</p>
                 `,
-                options: []
-            },
-            'endReplace': {
-                type: 'final',
-                title: "Replacing Your PC: Your Options", // Changed popup title
-                question: `
+                    options: []
+                },
+                endReplace: {
+                    type: "final",
+                    title: "Replacing Your PC: Your Options", // Changed popup title
+                    question: `
                     <p>If upgrading isn't feasible, replacing your device is a solid path forward. You have several great choices:</p>
                     <h3>1. Ditch your PC and use a tablet or phone instead:</h3>
                     <ul class="list-disc list-inside">
@@ -638,296 +644,301 @@
                     </ul>
                     <p>Whichever you choose, make sure it's a modern processor to ensure long-term support!</p>
                 `,
-                options: []
-            }
-        };
-
-        // DOM element references
-        const pageHeaderContainer = document.getElementById('page-header-container');
-        const questionTextContainer = document.getElementById('question-text-container');
-        const optionsContainer = document.getElementById('options-container');
-        const generalInfoContainer = document.getElementById('general-info-container');
-        const infoModal = document.getElementById('info-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-        const resetButton = document.getElementById('reset-btn');
-        const backButton = document.getElementById('back-btn');
-        const dynamicActionButtonsContainer = document.getElementById('dynamic-action-buttons');
-
-        /**
-         * Shows the modal with detailed information.
-         * @param {object} detailContent - Object containing title and content for the modal.
-         */
-        function showModal(detailContent) {
-            modalTitle.textContent = detailContent.title;
-            modalBody.innerHTML = detailContent.content;
-            infoModal.classList.add('show');
-            // Ensure consistent font size for paragraphs and list items within the modal
-            modalBody.querySelectorAll('p, ul, li, h3').forEach(el => { // Added h3 to ensure consistent font size
-                el.style.fontSize = '20px'; /* Consistent font size for modal content */
-                el.style.lineHeight = '1.6';
-                if (el.tagName === 'P') {
-                    el.style.marginBottom = '1rem'; /* Ensure spacing after paragraphs */
-                } else if (el.tagName === 'LI') {
-                    el.style.marginBottom = '0.5rem'; /* Ensure spacing after list items */
-                } else if (el.tagName === 'UL') { // Apply indentation to ULs within the modal
-                    el.style.marginLeft = '2.5rem'; /* Indent bulleted lists */
+                    options: []
                 }
-            });
-        }
+            };
 
-        /**
-         * Hides the modal.
-         */
-        function hideModal() {
-            infoModal.classList.remove('show');
-            modalTitle.textContent = '';
-            modalBody.innerHTML = '';
-        }
+            // DOM element references
+            const pageHeaderContainer = document.getElementById("page-header-container");
+            const questionTextContainer = document.getElementById("question-text-container");
+            const optionsContainer = document.getElementById("options-container");
+            const generalInfoContainer = document.getElementById("general-info-container");
+            const infoModal = document.getElementById("info-modal");
+            const modalTitle = document.getElementById("modal-title");
+            const modalBody = document.getElementById("modal-body");
+            const resetButton = document.getElementById("reset-btn");
+            const backButton = document.getElementById("back-btn");
+            const dynamicActionButtonsContainer = document.getElementById("dynamic-action-buttons");
 
-        /**
-         * Renders the dynamic action buttons (e.g., Yes/No) for 'step' type pages.
-         * @param {object} page - The current page object.
-         */
-        function renderActionButtons(page) {
-            dynamicActionButtonsContainer.innerHTML = ''; // Clear previous buttons
-            if (page.actionButtons && page.type === 'step') {
-                page.actionButtons.forEach(btnInfo => {
-                    const button = document.createElement('button');
-                    button.textContent = btnInfo.text;
-                    button.className = 'btn';
-                    // Apply specific styling based on button text or explicit style property
-                    if (btnInfo.style) {
-                        button.classList.add(btnInfo.style);
-                    } else if (btnInfo.text.includes("Not Recommended")) {
-                        button.classList.add('btn-tertiary');
-                    } else if (btnInfo.text.includes("delay") || btnInfo.text.includes("Start Over") || btnInfo.text.includes("Awesome")) {
-                        button.classList.add('btn-secondary');
+            /**
+             * Shows the modal with detailed information.
+             * @param {object} detailContent - Object containing title and content for the modal.
+             */
+            function showModal(detailContent) {
+                modalTitle.textContent = detailContent.title;
+                modalBody.innerHTML = detailContent.content;
+                infoModal.classList.add("show");
+                // Ensure consistent font size for paragraphs and list items within the modal
+                modalBody.querySelectorAll("p, ul, li, h3").forEach((el) => {
+                    // Added h3 to ensure consistent font size
+                    el.style.fontSize = "20px"; /* Consistent font size for modal content */
+                    el.style.lineHeight = "1.6";
+                    if (el.tagName === "P") {
+                        el.style.marginBottom = "1rem"; /* Ensure spacing after paragraphs */
+                    } else if (el.tagName === "LI") {
+                        el.style.marginBottom = "0.5rem"; /* Ensure spacing after list items */
+                    } else if (el.tagName === "UL") {
+                        // Apply indentation to ULs within the modal
+                        el.style.marginLeft = "2.5rem"; /* Indent bulleted lists */
                     }
-                    button.onclick = () => renderPage(btnInfo.next);
-                    dynamicActionButtonsContainer.appendChild(button);
                 });
-                dynamicActionButtonsContainer.classList.remove('hidden'); // Show the container
-            } else {
-                dynamicActionButtonsContainer.classList.add('hidden'); // Hide if not a 'step' page
-            }
-        }
-
-        /**
-         * Renders the general "More Info" links for the current page.
-         * The heading "More Information for this Step:" is conditionally rendered.
-         * @param {object} page - The current page object.
-         */
-        function renderGeneralInfoLinks(page) {
-            generalInfoContainer.innerHTML = ''; // Clear content including heading
-
-            // Determine if the "More Information for this Step:" heading should be shown
-            const shouldShowHeading = page.generalDetails && Object.keys(page.generalDetails).length > 0;
-
-            if (shouldShowHeading) {
-                generalInfoContainer.innerHTML = '<h3>More Information for this Step</h3>';
-                generalInfoContainer.classList.remove('hidden');
-            } else {
-                generalInfoContainer.classList.add('hidden');
             }
 
-            // Render individual info links if generalDetails exist and are not specifically excluded
-            if (page.generalDetails) {
-                for (const detailKey in page.generalDetails) {
-                    // Skip inline details that are no longer needed as separate links
-                    if ((currentPage === 'start' && detailKey === 'howToCheck') ||
-                        (currentPage === 'checkRequirements' && detailKey === 'howToCheckPCHealthCheck')) {
-                        continue;
-                    }
-                    const infoLink = document.createElement('span');
-                    infoLink.textContent = `${page.generalDetails[detailKey].title}`; // Removed "More Info: " prefix
-                    infoLink.className = 'info-link'; // This will make it display: block;
-                    infoLink.onclick = () => showModal(page.generalDetails[detailKey]);
-                    generalInfoContainer.appendChild(infoLink);
-                }
-            }
-        }
-
-        /**
-         * Renders the content for the specified page and manages button visibility.
-         * @param {string} pageId - The ID of the page to render.
-         * @param {boolean} [isBackNavigation=false] - True if this render is due to a back navigation.
-         */
-        function renderPage(pageId, isBackNavigation = false) {
-            // Push current page to history if not navigating back and page is different
-            if (!isBackNavigation && currentPage && pageId !== currentPage) {
-                pageHistory.push(currentPage);
-            }
-            currentPage = pageId;
-            const page = pages[pageId];
-
-            if (!page) {
-                console.error("Page not found:", pageId);
-                return;
+            /**
+             * Hides the modal.
+             */
+            function hideModal() {
+                infoModal.classList.remove("show");
+                modalTitle.textContent = "";
+                modalBody.innerHTML = "";
             }
 
-            // --- Strict "Blank Slate" for Buttons ---
-            // Hide all bottom navigation buttons and clear dynamic container at the start of every render
-            backButton.classList.add('hidden');
-            resetButton.classList.add('hidden');
-            dynamicActionButtonsContainer.innerHTML = ''; // Clear any previously added dynamic buttons
-            dynamicActionButtonsContainer.classList.add('hidden'); // Ensure the container itself is hidden
-
-
-            // --- Render Page Header (Step Number + Title) ---
-            pageHeaderContainer.innerHTML = ''; // Clear previous header content
-            const headerFlex = document.createElement('div');
-            headerFlex.className = 'flex items-center gap-4 mb-8'; // Flex container for step circle and H1
-
-            // Conditionally add step circle for 'step' and 'choices' page types
-            if ((page.type === 'step' || page.type === 'choices') && page.stepNumber) {
-                const stepCircle = document.createElement('div');
-                stepCircle.className = 'step-circle';
-                stepCircle.textContent = page.stepNumber;
-                headerFlex.appendChild(stepCircle);
-            }
-
-            const h1Element = document.createElement('h1');
-            h1Element.textContent = page.title;
-            headerFlex.appendChild(h1Element);
-            pageHeaderContainer.appendChild(headerFlex);
-
-
-            // --- Render Main Question Text and Options ---
-            questionTextContainer.innerHTML = ''; // Clear previous content
-            // Add SVG icon if available (though currently removed per user request)
-            if (page.icon) {
-                questionTextContainer.innerHTML += page.icon;
-            }
-            questionTextContainer.innerHTML += page.question; // Add question HTML content
-
-            optionsContainer.innerHTML = ''; // Clear previous options for choice buttons
-
-
-            // --- Render Content and Set Button Visibility based on Page Type ---
-            if (page.type === 'step') {
-                optionsContainer.classList.add('hidden'); // Hide the main options container
-                renderActionButtons(page); // Render Yes/No buttons in dynamicActionButtonsContainer
-                renderGeneralInfoLinks(page); // Render general info links (conditionally with/without heading)
-
-                // Show Back button if navigation history exists
-                if (pageHistory.length > 0) {
-                    backButton.classList.remove('hidden');
-                }
-            } else if (page.type === 'confirmation') {
-                optionsContainer.classList.add('hidden');
-                generalInfoContainer.classList.add('hidden'); // No general info links on confirmation page
-
-                // Only show Start Over button for confirmation page
-                resetButton.classList.remove('hidden');
-            } else if (page.type === 'choices') {
-                // Render choice buttons directly in optionsContainer
-                page.options.forEach(option => {
-                    const optionItem = document.createElement('div');
-                    optionItem.className = 'option-item';
-
-                    const button = document.createElement('button');
-                    button.textContent = option.text;
-                    button.className = 'btn';
-                    // Apply specific styling based on button text
-                    if (option.text.includes("Not Recommended")) {
-                        button.classList.add('btn-tertiary');
-                    } else if (option.text.includes("delay")) {
-                        button.classList.add('btn-secondary');
-                    }
-                    button.onclick = () => renderPage(option.next);
-                    optionItem.appendChild(button);
-
-                    optionsContainer.appendChild(optionItem);
-                });
-                optionsContainer.classList.remove('hidden'); // Show the main options container
-                renderGeneralInfoLinks(page); // Render general info links for choices page
-                // Note: The generalInfoContainer might be hidden by renderGeneralInfoLinks if no details exist
-
-                // Show Back and Start Over buttons for choices page
-                if (pageHistory.length > 0) {
-                    backButton.classList.remove('hidden');
-                }
-                resetButton.classList.remove('hidden');
-            } else if (page.type === 'final') {
-                optionsContainer.classList.add('hidden');
-                generalInfoContainer.classList.add('hidden'); // No general info links on final pages
-
-                // Show Back and Start Over buttons for final pages
-                if (pageHistory.length > 0) {
-                    backButton.classList.remove('hidden');
-                }
-                resetButton.classList.remove('hidden');
-            }
-            // If the current page is the 'start' page, initialize the countdown
-            if (currentPage === 'start') {
-                updateCountdown(); // Initial call
-                // Clear any existing interval to prevent multiple updates
-                if (window.countdownInterval) {
-                    clearInterval(window.countdownInterval);
-                }
-                window.countdownInterval = setInterval(updateCountdown, 1000); // Start updating every second
-            } else {
-                // If not the start page, clear the interval to stop countdown updates
-                if (window.countdownInterval) {
-                    clearInterval(window.countdownInterval);
-                    window.countdownInterval = null;
-                }
-            }
-        }
-
-        /**
-         * Navigates back to the previous page in the history.
-         */
-        function goBack() {
-            if (pageHistory.length > 0) {
-                const prevPageId = pageHistory.pop();
-                renderPage(prevPageId, true); // Pass true to indicate back navigation
-            }
-        }
-
-        // Function to calculate and display the countdown
-        function updateCountdown() {
-            const targetDate = new Date('October 14, 2025 23:59:59').getTime(); // End of day for October 14, 2025
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-
-            const daysCountElement = document.getElementById('days-count');
-            const daysTextElement = document.getElementById('days-text');
-
-            // Ensure elements exist before trying to update them (important for non-start pages)
-            if (daysCountElement && daysTextElement) {
-                if (days >= 0) {
-                    daysCountElement.textContent = days;
-                    daysTextElement.textContent = "days to go";
-                    // Ensure correct classes are applied if it was previously EXPIRED
-                    daysCountElement.classList.remove('countdown-text');
-                    daysCountElement.classList.add('countdown-number');
+            /**
+             * Renders the dynamic action buttons (e.g., Yes/No) for 'step' type pages.
+             * @param {object} page - The current page object.
+             */
+            function renderActionButtons(page) {
+                dynamicActionButtonsContainer.innerHTML = ""; // Clear previous buttons
+                if (page.actionButtons && page.type === "step") {
+                    page.actionButtons.forEach((btnInfo) => {
+                        const button = document.createElement("button");
+                        button.textContent = btnInfo.text;
+                        button.className = "btn";
+                        // Apply specific styling based on button text or explicit style property
+                        if (btnInfo.style) {
+                            button.classList.add(btnInfo.style);
+                        } else if (btnInfo.text.includes("Not Recommended")) {
+                            button.classList.add("btn-tertiary");
+                        } else if (
+                            btnInfo.text.includes("delay") ||
+                            btnInfo.text.includes("Start Over") ||
+                            btnInfo.text.includes("Awesome")
+                        ) {
+                            button.classList.add("btn-secondary");
+                        }
+                        button.onclick = () => renderPage(btnInfo.next);
+                        dynamicActionButtonsContainer.appendChild(button);
+                    });
+                    dynamicActionButtonsContainer.classList.remove("hidden"); // Show the container
                 } else {
-                    daysCountElement.textContent = "EXPIRED";
-                    daysTextElement.textContent = ""; // Clear "days to go"
-                    // Apply text style for "EXPIRED" and remove number style
-                    daysCountElement.classList.remove('countdown-number');
-                    daysCountElement.classList.add('countdown-text');
+                    dynamicActionButtonsContainer.classList.add("hidden"); // Hide if not a 'step' page
                 }
             }
-        }
 
-        // Event listener for the reset button
-        resetButton.onclick = () => {
-            pageHistory = []; // Clear history on reset
-            renderPage('start');
-        };
+            /**
+             * Renders the general "More Info" links for the current page.
+             * The heading "More Information for this Step:" is conditionally rendered.
+             * @param {object} page - The current page object.
+             */
+            function renderGeneralInfoLinks(page) {
+                generalInfoContainer.innerHTML = ""; // Clear content including heading
 
-        // Event listener for the back button
-        backButton.onclick = goBack;
+                // Determine if the "More Information for this Step:" heading should be shown
+                const shouldShowHeading = page.generalDetails && Object.keys(page.generalDetails).length > 0;
 
-        // Initial render when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            renderPage('start');
-        });
-    </script>
-</body>
+                if (shouldShowHeading) {
+                    generalInfoContainer.innerHTML = "<h3>More Information for this Step</h3>";
+                    generalInfoContainer.classList.remove("hidden");
+                } else {
+                    generalInfoContainer.classList.add("hidden");
+                }
+
+                // Render individual info links if generalDetails exist and are not specifically excluded
+                if (page.generalDetails) {
+                    for (const detailKey in page.generalDetails) {
+                        // Skip inline details that are no longer needed as separate links
+                        if (
+                            (currentPage === "start" && detailKey === "howToCheck") ||
+                            (currentPage === "checkRequirements" && detailKey === "howToCheckPCHealthCheck")
+                        ) {
+                            continue;
+                        }
+                        const infoLink = document.createElement("span");
+                        infoLink.textContent = `${page.generalDetails[detailKey].title}`; // Removed "More Info: " prefix
+                        infoLink.className = "info-link"; // This will make it display: block;
+                        infoLink.onclick = () => showModal(page.generalDetails[detailKey]);
+                        generalInfoContainer.appendChild(infoLink);
+                    }
+                }
+            }
+
+            /**
+             * Renders the content for the specified page and manages button visibility.
+             * @param {string} pageId - The ID of the page to render.
+             * @param {boolean} [isBackNavigation=false] - True if this render is due to a back navigation.
+             */
+            function renderPage(pageId, isBackNavigation = false) {
+                // Push current page to history if not navigating back and page is different
+                if (!isBackNavigation && currentPage && pageId !== currentPage) {
+                    pageHistory.push(currentPage);
+                }
+                currentPage = pageId;
+                const page = pages[pageId];
+
+                if (!page) {
+                    console.error("Page not found:", pageId);
+                    return;
+                }
+
+                // --- Strict "Blank Slate" for Buttons ---
+                // Hide all bottom navigation buttons and clear dynamic container at the start of every render
+                backButton.classList.add("hidden");
+                resetButton.classList.add("hidden");
+                dynamicActionButtonsContainer.innerHTML = ""; // Clear any previously added dynamic buttons
+                dynamicActionButtonsContainer.classList.add("hidden"); // Ensure the container itself is hidden
+
+                // --- Render Page Header (Step Number + Title) ---
+                pageHeaderContainer.innerHTML = ""; // Clear previous header content
+                const headerFlex = document.createElement("div");
+                headerFlex.className = "flex items-center gap-4 mb-8"; // Flex container for step circle and H1
+
+                // Conditionally add step circle for 'step' and 'choices' page types
+                if ((page.type === "step" || page.type === "choices") && page.stepNumber) {
+                    const stepCircle = document.createElement("div");
+                    stepCircle.className = "step-circle";
+                    stepCircle.textContent = page.stepNumber;
+                    headerFlex.appendChild(stepCircle);
+                }
+
+                const h1Element = document.createElement("h1");
+                h1Element.textContent = page.title;
+                headerFlex.appendChild(h1Element);
+                pageHeaderContainer.appendChild(headerFlex);
+
+                // --- Render Main Question Text and Options ---
+                questionTextContainer.innerHTML = ""; // Clear previous content
+                // Add SVG icon if available (though currently removed per user request)
+                if (page.icon) {
+                    questionTextContainer.innerHTML += page.icon;
+                }
+                questionTextContainer.innerHTML += page.question; // Add question HTML content
+
+                optionsContainer.innerHTML = ""; // Clear previous options for choice buttons
+
+                // --- Render Content and Set Button Visibility based on Page Type ---
+                if (page.type === "step") {
+                    optionsContainer.classList.add("hidden"); // Hide the main options container
+                    renderActionButtons(page); // Render Yes/No buttons in dynamicActionButtonsContainer
+                    renderGeneralInfoLinks(page); // Render general info links (conditionally with/without heading)
+
+                    // Show Back button if navigation history exists
+                    if (pageHistory.length > 0) {
+                        backButton.classList.remove("hidden");
+                    }
+                } else if (page.type === "confirmation") {
+                    optionsContainer.classList.add("hidden");
+                    generalInfoContainer.classList.add("hidden"); // No general info links on confirmation page
+
+                    // Only show Start Over button for confirmation page
+                    resetButton.classList.remove("hidden");
+                } else if (page.type === "choices") {
+                    // Render choice buttons directly in optionsContainer
+                    page.options.forEach((option) => {
+                        const optionItem = document.createElement("div");
+                        optionItem.className = "option-item";
+
+                        const button = document.createElement("button");
+                        button.textContent = option.text;
+                        button.className = "btn";
+                        // Apply specific styling based on button text
+                        if (option.text.includes("Not Recommended")) {
+                            button.classList.add("btn-tertiary");
+                        } else if (option.text.includes("delay")) {
+                            button.classList.add("btn-secondary");
+                        }
+                        button.onclick = () => renderPage(option.next);
+                        optionItem.appendChild(button);
+
+                        optionsContainer.appendChild(optionItem);
+                    });
+                    optionsContainer.classList.remove("hidden"); // Show the main options container
+                    renderGeneralInfoLinks(page); // Render general info links for choices page
+                    // Note: The generalInfoContainer might be hidden by renderGeneralInfoLinks if no details exist
+
+                    // Show Back and Start Over buttons for choices page
+                    if (pageHistory.length > 0) {
+                        backButton.classList.remove("hidden");
+                    }
+                    resetButton.classList.remove("hidden");
+                } else if (page.type === "final") {
+                    optionsContainer.classList.add("hidden");
+                    generalInfoContainer.classList.add("hidden"); // No general info links on final pages
+
+                    // Show Back and Start Over buttons for final pages
+                    if (pageHistory.length > 0) {
+                        backButton.classList.remove("hidden");
+                    }
+                    resetButton.classList.remove("hidden");
+                }
+                // If the current page is the 'start' page, initialize the countdown
+                if (currentPage === "start") {
+                    updateCountdown(); // Initial call
+                    // Clear any existing interval to prevent multiple updates
+                    if (window.countdownInterval) {
+                        clearInterval(window.countdownInterval);
+                    }
+                    window.countdownInterval = setInterval(updateCountdown, 1000); // Start updating every second
+                } else {
+                    // If not the start page, clear the interval to stop countdown updates
+                    if (window.countdownInterval) {
+                        clearInterval(window.countdownInterval);
+                        window.countdownInterval = null;
+                    }
+                }
+            }
+
+            /**
+             * Navigates back to the previous page in the history.
+             */
+            function goBack() {
+                if (pageHistory.length > 0) {
+                    const prevPageId = pageHistory.pop();
+                    renderPage(prevPageId, true); // Pass true to indicate back navigation
+                }
+            }
+
+            // Function to calculate and display the countdown
+            function updateCountdown() {
+                const targetDate = new Date("October 14, 2025 23:59:59").getTime(); // End of day for October 14, 2025
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+                const daysCountElement = document.getElementById("days-count");
+                const daysTextElement = document.getElementById("days-text");
+
+                // Ensure elements exist before trying to update them (important for non-start pages)
+                if (daysCountElement && daysTextElement) {
+                    if (days >= 0) {
+                        daysCountElement.textContent = days;
+                        daysTextElement.textContent = "days to go";
+                        // Ensure correct classes are applied if it was previously EXPIRED
+                        daysCountElement.classList.remove("countdown-text");
+                        daysCountElement.classList.add("countdown-number");
+                    } else {
+                        daysCountElement.textContent = "EXPIRED";
+                        daysTextElement.textContent = ""; // Clear "days to go"
+                        // Apply text style for "EXPIRED" and remove number style
+                        daysCountElement.classList.remove("countdown-number");
+                        daysCountElement.classList.add("countdown-text");
+                    }
+                }
+            }
+
+            // Event listener for the reset button
+            resetButton.onclick = () => {
+                pageHistory = []; // Clear history on reset
+                renderPage("start");
+            };
+
+            // Event listener for the back button
+            backButton.onclick = goBack;
+
+            // Initial render when the page loads
+            document.addEventListener("DOMContentLoaded", () => {
+                renderPage("start");
+            });
+        </script>
+    </body>
 </html>
