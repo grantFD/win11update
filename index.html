@@ -474,7 +474,7 @@
                     stepNumber: 1,
                     icon: ``, // Removed SVG icon
                     question: `
-                    <p>Very soon - on 14 October 2025 - Microsoft will end support for Windows 10 and earlier versions of Windows. After this date, devices running older versions of Windows will no longer receive critical security updates. To stay safe online —especially when doing internet banking— devices need updated to the latest version (Windows 11 24H2) to receive regular security updates from Microsoft. These updates protect against the latest threats and vulnerabilities. The software for this upgrade is free.</p>
+                    <p>Very soon - on 14 October 2025 - Microsoft will end support for Windows 10 and earlier versions of Windows. After this date, devices running older versions of Windows will no longer receive critical security updates. To stay safe online —especially when doing internet banking— devices need updated to the latest version (Windows 11 24H2). Then they will receive the regular security updates that protect against the latest threats and vulnerabilities. This online interactive guide explains how to find out what you need to do and gives you options if your PC doesn't make the grade.</p>
 
                     <div class="countdown-flex-container">
                         <div class="countdown-flex-item image-container">
@@ -504,7 +504,7 @@
                         `
                         },
                         windowsVersions: {
-                            title: "What Versions of Windows 11 are there?",
+                            title: "Do I need a specific type of Windows 11?",
                             content: `
                             <p>FYI you’ll see Windows 11 advertised in 3 versions - all variations of Windows 11 Home:</p>
                             <ul class="list-disc list-inside">
@@ -512,6 +512,26 @@
                                 <li><strong>Windows 11 Home S:</strong> Same as Windows 11 Home, but runs in “safe mode”. It claims to be safer because it only runs applications installed from the official Microsoft Windows Store. This mode can be turned off, restoring full Windows 11 Home functionality.</li>
                             </ul>
                             <p>When you upgrade you get the same variant - from 10 Pro you’ll get 11 Pro, otherwise you’ll get Win 11 Home.</p>
+                        `
+                        },
+                        windowsRisks: {
+                            title: "Can I upgrade older hardware without risks?",
+                            content: `
+                      <p>
+                            Windows 11 is now well-established, but older hardware can pose challenges. The main risk
+                            with older peripherals like scanners and printers is lacking proper Windows 11 drivers,
+                            which can cause them to not work or lose features. Always check your manufacturer's website
+                            for Windows 11 driver compatibility before upgrading.
+                        </p>
+                        <p>
+                            Similarly, while most software is compatible, some older or specialized programs may not run
+                            correctly. Verify compatibility beforehand.
+                        </p>
+                        <p>
+                            Performance is generally good on modern PCs, often matching or even exceeding Windows 10's
+                            speed. However, older PCs that barely meet the minimum requirements may experience slower
+                            performance and instability.
+                        </p>
                         `
                         }
                     }
@@ -549,12 +569,32 @@
                             <p>The upgrade process can take a few hours, so be prepared! Here are some key steps:</p>
                             <h3>Before Installing:</h3>
                             <ul class="list-disc list-inside">
-                                <li><strong>Backup your PC:</strong> Create recovery media and back up all your important data. This is crucial!</li>
-                                <li><strong>Check your apps:</strong> Ensure your current applications will run smoothly under Windows 11.</li>
-                                <li><strong>Update security:</strong> Update your antivirus software and its definitions.</li>
-                                <li><strong>Install drivers & BIOS:</strong> Make sure all your drivers and BIOS are up-to-date.</li>
+                                <li>
+                                    <strong>Backup your PC:</strong> Create recovery media and back up all your
+                                    important data. This is crucial!
+                                </li>
+                                <li>
+                                    <strong>Check your peripherals:</strong> Go to the manufacturer's website for your
+                                    scanner and printer. Look for a "support" or "drivers" section, and see if they list
+                                    Windows 11 drivers for your specific model.
+                                </li>
+                                <li>
+                                    <strong>Check your apps:</strong> Ensure your current applications will run smoothly
+                                    under Windows 11.
+                                </li>
+                                <li>
+                                    <strong>Update security:</strong> Update your antivirus software and its
+                                    definitions.
+                                </li>
+                                <li>
+                                    <strong>Install drivers & BIOS:</strong> Make sure all your drivers and BIOS are
+                                    up-to-date.
+                                </li>
                                 <li>You might also need to decrypt your hard drive.</li>
-                                <li>Download Windows 11 from Windows Update; you might need a USB stick if disk space is low.</li>
+                                <li>
+                                    Download Windows 11 from Windows Update; you might need a USB stick if disk space is
+                                    low.
+                                </li>
                             </ul>
                             <h3>After Installing:</h3>
                             <ul class="list-disc list-inside">
@@ -564,7 +604,7 @@
                                 <li>Check that devices like printers are working properly.</li>
                                 <li>Take some time to learn the new interface – it's modern and easy to use!</li>
                             </ul>
-                            <p class="mt-4">For advanced users or with a trusted technician, you can find more resources like <a href="https://github.com/builtbybel/Flyby11" target="_blank" class="inline-link">Flyby11 on GitHub</a> for unsupported machines, but we generally recommend sticking to supported upgrades for seniors.</p>
+                            <p class="mt-4">For advanced users or trusted technicians: You can find more resources like <a href="https://github.com/builtbybel/Flyby11" target="_blank" class="inline-link">Flyby11 on GitHub</a> for unsupported machines, but we generally recommend sticking to supported upgrades for seniors.</p>
                         `
                         }
                     }
